@@ -1,25 +1,61 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron');
 const path = require('path');
-
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) {
-  // eslint-disable-line global-require
-  app.quit();
-}
+require("electron-reload")(__dirname)
 
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 300,
+    height: 300,
+    maxHeight: 300, minHeight: 300,
+    maxWidth: 300, minWidth: 300,
+    frame: false,
+    transparent: true,
+    autoHideMenuBar: true,
+    focusable: false,
+    resizable: false,
+    webPreferences: {
+      preload: __dirname + "\\preload.js",
+      // nodeIntegration: true,
+      // webviewTag: true
+    }
   });
+
+  const taskWindow = new BrowserWindow({
+    width: 300,
+    height: 300,
+    maxHeight: 300, minHeight: 300,
+    maxWidth: 300, minWidth: 300,
+    frame: false,
+    transparent: true,
+    autoHideMenuBar: true,
+    focusable: false,
+    resizable: false,
+    webPreferences: {
+      preload: __dirname + "\\preload.js"
+    }
+  });
+
+  mainWindow.setAlwaysOnTop(true, 'screen-saver', 1);
+
+  ipcMain.on("close-app", () => app.quit());
+
+  // app.whenReady().then(() => {
+  //   const ret = globalShortcut.register("Alt+A", () => {
+  //     if(mainWindow.hide())
+  //       mainWindow.show();
+  //     else
+  //       mainWindow.hide();
+  //   })
+  // })
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
-
+  taskWindow.loadFile(path.join(__dirname, 'task.html'));
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 };
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

@@ -13,13 +13,18 @@ body {
   user-select: none;
 }
 
-#exit {
+#close {
   padding: 5px;
   font-size: .8em;
   color:grey;
   -webkit-app-region: no-drag;
 }
 
-#exit:hover {
+#close:hover {
   color:#41c221
 }
+/* 
+#add {
+  -webkit-app-region: no-drag;
+  color: pink
+} */
